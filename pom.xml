@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.dialogapi</groupId>
+    <artifactId>dialogapi-parent</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>DialogAPI</name>
+    <description>Action bar dialogs, dialog screens and glyph layouts for Paper 1.21.9 - 26.3, with one shared resource pack</description>
+    <!-- replace RohrJaspi (here and in README.md) with your GitHub name before pushing -->
+    <url>https://github.com/RohrJaspi/dialog-api</url>
+    <inceptionYear>2026</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/gpl-3.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/RohrJaspi/dialog-api</url>
+        <connection>scm:git:https://github.com/RohrJaspi/dialog-api.git</connection>
+        <developerConnection>scm:git:git@github.com:RohrJaspi/dialog-api.git</developerConnection>
+    </scm>
+
+    <modules>
+        <module>api</module>
+        <module>plugin</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <!-- compiled against 1.21.11 (Java 21 class files, Adventure 4.26); the jar runs on 1.21.9 - 26.3 -->
+        <paper.api.version>1.21.11-R0.1-SNAPSHOT</paper.api.version>
+        <junit.version>6.1.3</junit.version>
+        <dialogapi.cacheDir></dialogapi.cacheDir>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.papermc.paper</groupId>
+                <artifactId>paper-api</artifactId>
+                <version>${paper.api.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                    <configuration>
+                        <release>${maven.compiler.release}</release>
+                        <compilerArgs>
+                            <arg>-Xlint:deprecation</arg>
+                        </compilerArgs>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.4</version>
+                    <configuration>
+                        <argLine>-Djava.awt.headless=true</argLine>
+                        <systemPropertyVariables>
+                            <dialogapi.cacheDir>${dialogapi.cacheDir}</dialogapi.cacheDir>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <!-- ./mvnw -Pmin-api -DskipTests package: proves nothing newer than Paper 1.21.9 / Adventure 4.25 is used -->
+        <profile>
+            <id>min-api</id>
+            <properties>
+                <paper.api.version>1.21.10-R0.1-SNAPSHOT</paper.api.version>
+            </properties>
+        </profile>
+    </profiles>
+</project>

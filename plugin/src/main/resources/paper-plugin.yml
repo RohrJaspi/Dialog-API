@@ -1,0 +1,9 @@
+name: DialogAPI
+version: '${project.version}'
+main: dev.dialogapi.plugin.DialogApiPlugin
+description: 'Action bar dialogs, dialog screens and glyph layouts with one shared resource pack'
+api-version: '1.21.9'
+permissions:
+  dialogapi.admin:
+    description: Use /dialogapi (start, stop, reload, list, bind, unbind, pack)
+    default: op

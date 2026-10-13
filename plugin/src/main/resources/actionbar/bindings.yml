@@ -1,0 +1,14 @@
+# Which entities start which dialog when right-clicked.
+#
+# Easier alternatives that need no editing here:
+#   - look at the entity and run /dialogapi bind <dialogId> (stored in the entity itself)
+#   - give the entity the scoreboard tag "dialog.<dialogId>" (prefix: binding.tag-prefix in config.yml)
+#       /tag @e[type=villager,limit=1,sort=nearest] add dialog.stats_house
+
+# Entity UUID -> dialog id
+uuids: {}
+#  "0d5a8c9e-7b1f-4c2e-9a3d-5f6e7d8c9b0a": stats_house
+
+# Scoreboard tag -> dialog id
+tags: {}
+#  stats_npc: stats_house

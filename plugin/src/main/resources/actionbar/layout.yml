@@ -1,0 +1,58 @@
+# HUD layout in GUI pixels. Changing it rebuilds the resource pack (/dialogapi reload) and players
+# need the new pack.
+#
+#   x: from the left edge of the HUD. The HUD as a whole is centred on the screen.
+#   y: from the top of the vanilla action bar line (about 72 px above the bottom of the screen
+#      at any GUI scale). Negative = higher. Everything must stay below roughly -240 because the
+#      client only accepts glyphs up to 256 px tall.
+#
+# Texture sizes come from the PNGs in textures/. If you replace a texture with a different size,
+# adjust the positions here.
+
+offset-x: 0                 # move the whole HUD left (-) or right (+)
+
+portrait:
+  enabled: true
+  frame-x: 0                # portrait_frame.png (20x20)
+  frame-y: -7
+  # The head is a player-head text object. The client always draws it 8x8 on the action bar
+  # line (y = -1 .. 7); only its x position can be chosen. frame-y = -7 centres a 20 px frame.
+  head-x: 6
+
+box:                        # dialog_box.png (240x52)
+  x: 24
+  y: -39
+
+text:
+  x: 32
+  y: -33                    # top of the first line (cap height starts here)
+  line-height: 10
+  max-lines: 4              # one font per line: dialog:line1 .. dialog:line4
+  width: 224                # word wrap width
+
+indicator:                  # continue.png, the blinking ▽ (7x4)
+  x: 250
+  y: 5
+
+name-tab:                   # name_tab.png, stretched horizontally to fit the name
+  x: 28
+  y: -52
+  slice-left: 4             # columns kept as left cap
+  slice-right: 4            # columns kept as right cap (the rest is repeated)
+  padding-left: 5
+  padding-right: 4
+  text-y: -49
+  max-width: 82             # longer names are cut with an ellipsis
+
+answers:                    # answer_box.png, stretched vertically for 1..max-answers rows
+  box-x: 114
+  box-bottom: -41           # the box grows upwards from here
+  slice-top: 4              # rows kept as top border
+  slice-bottom: 4           # rows kept as bottom border (the rows between are repeated)
+  row-height: 11
+  max-answers: 4            # fonts dialog:answer1 .. dialog:answer4
+  pointer-x: 119            # pointer.png (9x7), drawn next to the selected answer
+  pointer-y: 2              # relative to the top of the answer row
+  text-x: 130
+  text-y: 2                 # relative to the top of the answer row
+  text-width: 128           # longer answers are cut with an ellipsis

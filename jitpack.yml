@@ -1,0 +1,3 @@
+# JitPack builds every git tag with this JDK; the default Maven install (tests skipped) is used.
+jdk:
+  - openjdk21

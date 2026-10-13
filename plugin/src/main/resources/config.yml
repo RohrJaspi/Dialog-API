@@ -1,0 +1,98 @@
+# DialogAPI - action bar dialogs, dialog screens and the shared resource pack.
+# Reload with /dialogapi reload (this also rebuilds the resource pack).
+
+font:
+  # Glyphs used for dialog text inside the boxes.
+  #   vanilla - the vanilla font sheets, taken from the official client jar. The jar is downloaded
+  #             once from Mojang (SHA-1 verified, ~30 MB) and only the font files are kept in cache/.
+  #   custom  - font/font.json (vanilla font format, file paths relative to font/). A small
+  #             placeholder pixel font is written there on first use. Also the fallback if the
+  #             vanilla download fails.
+  source: vanilla
+  # Characters that are not in the font are replaced with this one.
+  replacement-char: "?"
+
+text:
+  # Default color of dialog text and answers (MiniMessage tags in the text override it).
+  default-color: "#FFFFFF"
+  shadow: true
+
+# Defaults for every dialog. Dialogs and nodes can override these keys.
+typewriter:
+  mode: letter            # letter | word
+  speed: 1                # ticks between two steps (0 = show the text at once)
+  punctuation-delay: 4    # extra ticks after . ! ? (half after , ; :)
+  allow-skip: true        # confirming while typing reveals the whole page
+  sound:
+    key: minecraft:block.note_block.hat
+    volume: 0.35
+    pitch: 1.6
+    pitch-variance: 0.15
+    every: word           # word | letter
+    source: master
+advance: click            # click = wait for confirm, auto = continue after auto-delay
+auto-delay: 60            # ticks, for advance: auto
+
+indicator:
+  blink-ticks: 10         # the continue indicator blinks; 0 = always visible
+
+question:
+  # MiniMessage formats for answers. <number> = 1, 2, 3..., <answer> = the answer text.
+  answer-format: "<#B8B8B8><number>. <answer>"
+  selected-format: "<#FFE066><number>. <answer>"
+  wrap-selection: true    # scrolling past the last answer jumps to the first
+  number-keys: true       # keys 1-9 select an answer directly
+  select-sound:
+    key: minecraft:ui.button.click
+    volume: 0.25
+    pitch: 1.8
+  confirm-sound:
+    key: minecraft:ui.button.click
+    volume: 0.35
+    pitch: 1.2
+
+input:
+  confirm-on-npc-click: true            # right-click the NPC (works with an empty hand)
+  confirm-on-sneak: true                # press shift
+  confirm-on-any-entity-click: false
+  confirm-on-block-or-air-click: false  # right-click blocks/air (air only works while holding an item)
+  cooldown-ticks: 4                     # ignore repeated confirms within this many ticks
+
+session:
+  # The dialog ends when the player is further than this from the NPC (or from where the dialog
+  # started, if it was started by command). -1 disables the check. Dialogs can override it.
+  max-distance: 8.0
+  # The action bar fades after 3 seconds; it is re-sent at least this often (ticks, max 40).
+  refresh-ticks: 20
+
+binding:
+  # Entities with the scoreboard tag <prefix><dialogId> start that dialog when right-clicked,
+  # e.g. /tag @e[type=villager,limit=1,sort=nearest] add dialog.stats_house
+  tag-prefix: "dialog."
+
+messages:
+  walked-away: "<gray>You walked away from the conversation."
+  not-ready: "<red>Dialogs are not available yet, the resource pack is still being built."
+
+pack:
+  description: "DialogAPI"
+  # Resource pack format range: 69 = Minecraft 1.21.9, 97 = Minecraft 26.3. Raise max-format for newer versions.
+  min-format: 69
+  max-format: 97
+  # Send the pack to players when they join. Needs a URL: either pack.url or self-host.
+  # Not needed if you serve the pack with server.properties (see README).
+  send-on-join: true
+  required: false
+  prompt: "<gray>This server uses a small resource pack for NPC dialogs."
+  # Public URL where you uploaded plugins/DialogAPI/DialogAPI-pack.zip (if not self-hosting).
+  url: ""
+  # Re-send the pack to online players when /dialogapi reload produced a different pack.
+  resend-on-change: true
+  self-host:
+    # Serve the zip from a tiny built-in web server.
+    enabled: true
+    bind-address: 0.0.0.0
+    port: 8163
+    # Address players use to download it, e.g. http://play.example.com:8163
+    # Empty = http://<server-ip from server.properties or 127.0.0.1>:<port>
+    public-url: ""

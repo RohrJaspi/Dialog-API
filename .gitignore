@@ -1,0 +1,6 @@
+target/
+run/
+.idea/
+*.iml
+.DS_Store
+.claude/

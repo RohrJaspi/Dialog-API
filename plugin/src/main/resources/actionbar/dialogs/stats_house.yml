@@ -1,0 +1,56 @@
+# Example dialog. The id defaults to the file name: /dialogapi start stats_house
+#
+# Text is MiniMessage (<gold>, <#ff8800>, <bold>, <italic>, <br> for a line break, <player> for the
+# player's name). Long text is wrapped and split into pages automatically; a list of strings
+# starts a new page for every entry.
+
+speaker: "<gold>MaximDe"
+# Player name, UUID, %player% (the viewer), or a section:
+#   portrait: { texture: "<base64 textures value>" }      custom head texture
+#   portrait: { skin-file: maxim }                        textures/portraits/maxim.png (64x64 skin)
+portrait: MaximDe
+
+# Optional overrides of the config.yml defaults for this dialog (nodes can override them too):
+typewriter:
+  mode: letter
+  speed: 1
+max-distance: 10
+
+nodes:
+  welcome:
+    text: "Welcome to the <aqua>Stats House</aqua>! Here you can look at the leaderboards of <yellow>Duels</yellow> and compare your statistics."
+
+  menu:
+    question: "What do you want to know?"
+    timeout: 400            # ticks; after 20 s the default answer is chosen
+    default-answer: 3       # 1-based
+    answers:
+      - text: "How does that work?"
+        goto: explain
+      - text: "How do I rank up?"
+        goto: rankup
+      - text: "Give me the leaderboard!"
+        commands:
+          - "tellraw %player% {\"text\":\"(Here a leaderboard command would run)\",\"color\":\"gray\"}"
+        goto: bye
+      - text: "Alright then!"
+        end: true
+
+  explain:
+    text:
+      - "Every duel you play is recorded. Wins, losses, kill streaks and your rating all end up on the boards in this house."
+      - "Walk up to a board and <green>right-click</green> it to see the top players. Your own position is shown below the list."
+    typewriter:
+      mode: word
+      speed: 3
+    goto: menu
+
+  rankup:
+    text: "Win duels to gain rating. Every <gold>100 points</gold> you climb one rank. Losing costs a few points, so pick your fights wisely, <player>!"
+    goto: menu
+
+  bye:
+    text: "Good luck out there!"
+    advance: auto
+    auto-delay: 40
+    end: true
