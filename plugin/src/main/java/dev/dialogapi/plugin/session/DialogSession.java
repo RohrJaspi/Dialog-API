@@ -33,6 +33,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.object.PlayerHeadObjectContents;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -56,6 +57,7 @@ public final class DialogSession implements ActiveDialog {
     private final SessionManager manager;
     private final Player player;
     private final @Nullable UUID npcId;
+    private final ClickHitbox hitbox;
     private Location anchor;
     private @Nullable BukkitTask task;
 
@@ -98,6 +100,7 @@ public final class DialogSession implements ActiveDialog {
         this.node = dialog.startNode();
         this.npcId = npc != null ? npc.getUniqueId() : null;
         this.anchor = npc != null ? npc.getLocation() : player.getLocation();
+        this.hitbox = new ClickHitbox(manager.plugin(), player);
     }
 
     // ------------------------------------------------------------------------------------ lifecycle
@@ -106,6 +109,7 @@ public final class DialogSession implements ActiveDialog {
         task = Bukkit.getScheduler().runTaskTimer(manager.plugin(), this::tick, 1L, 1L);
         enterNode(first);
         if (phase != Phase.ENDED) {
+            updateHitbox();
             render();
         }
     }
@@ -120,6 +124,7 @@ public final class DialogSession implements ActiveDialog {
             task.cancel();
             task = null;
         }
+        hitbox.remove();
         manager.remove(this);
         if (player.isOnline() && reason != EndReason.REPLACED) {
             player.sendActionBar(Component.empty());
@@ -154,6 +159,11 @@ public final class DialogSession implements ActiveDialog {
 
     public boolean isNpc(Entity entity) {
         return npcId != null && npcId.equals(entity.getUniqueId());
+    }
+
+    /** True for the invisible box that catches right-clicks anywhere (see {@link ClickHitbox}). */
+    public boolean isHitbox(Entity entity) {
+        return hitbox.is(entity);
     }
 
     // ------------------------------------------------------------------------------------ input
@@ -242,6 +252,7 @@ public final class DialogSession implements ActiveDialog {
         if (phase == Phase.ENDED) {
             return;
         }
+        updateHitbox();
         sinceRender++;
         if (dirty || sinceRender >= settings().refreshTicks()) {
             render();
@@ -288,6 +299,15 @@ public final class DialogSession implements ActiveDialog {
             } else {
                 end(EndReason.FINISHED);
             }
+        }
+    }
+
+    /** Spectators would spectate the box on left-click, so they don't get one. */
+    private void updateHitbox() {
+        if (settings().confirmOnBlockOrAirClick() && player.getGameMode() != GameMode.SPECTATOR) {
+            hitbox.follow();
+        } else {
+            hitbox.remove();
         }
     }
 

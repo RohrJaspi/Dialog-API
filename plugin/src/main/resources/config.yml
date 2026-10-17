@@ -55,7 +55,7 @@ input:
   confirm-on-npc-click: true            # right-click the NPC (works with an empty hand)
   confirm-on-sneak: true                # press shift
   confirm-on-any-entity-click: false
-  confirm-on-block-or-air-click: false  # right-click blocks/air (air only works while holding an item)
+  confirm-on-block-or-air-click: false  # right-click anywhere, also with an empty hand (blocks left-clicks while a dialog runs)
   cooldown-ticks: 4                     # ignore repeated confirms within this many ticks
 
 session:

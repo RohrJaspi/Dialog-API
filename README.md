@@ -340,8 +340,11 @@ Scrolling is detected with `PlayerItemHeldEvent`. While the answer box is shown,
 cancelled, so the real hotbar slot never changes. Paper sends the old slot back to the client.
 The delta handles the 8↔0 wrap-around. If the player scrolls again before that correction
 arrives (within their ping), the delta is measured from the last reported slot instead.
-Options in `config.yml` → `input`: confirm by clicking any entity, or by right-clicking
-blocks/air (air only sends a packet while holding an item).
+Options in `config.yml` → `input`: confirm by clicking any entity, or by right-clicking anywhere
+(`confirm-on-block-or-air-click`). The client sends no packet for a right-click on air with an empty
+hand, so this option puts an invisible `interaction` entity around the player's head while a dialog
+runs. Only that player sees it, and projectiles pass through it. Every click hits it, so while the
+dialog is open, left-clicks can't break blocks or attack, and the block outline is hidden.
 
 ## Dialog screens and glyph canvases
 

@@ -29,7 +29,8 @@ import org.bukkit.inventory.EquipmentSlot;
  *   <li>Mouse wheel / number keys: {@link PlayerItemHeldEvent}, cancelled while answers are shown
  *       so the real hotbar slot never changes.</li>
  *   <li>Confirm: right-click on the NPC (works with an empty hand), sneak, and optionally
- *       right-click on any entity, block or air.</li>
+ *       right-click on any entity, or anywhere. Right-clicking air with an empty hand sends no
+ *       packet, so "anywhere" uses an invisible hitbox around the player's head.</li>
  *   <li>Right-clicking a bound NPC starts its dialog.</li>
  * </ul>
  * The client sends up to four packets for one entity click (interact-at + interact, both hands),
@@ -85,6 +86,13 @@ public final class InputListener implements Listener {
         PluginSettings settings = plugin.settings();
         DialogSession session = plugin.sessions().get(player);
         if (session != null) {
+            if (session.isHitbox(entity)) {
+                event.setCancelled(true);
+                if (hand == EquipmentSlot.HAND && firstClickThisTick(player)) {
+                    session.confirm();
+                }
+                return;
+            }
             boolean confirm = settings.confirmOnAnyEntityClick()
                     || (settings.confirmOnNpcClick() && (session.isNpc(entity) || !session.hasNpc()));
             if (confirm) {
