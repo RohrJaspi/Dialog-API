@@ -1,3 +1,8 @@
-# JitPack builds every git tag with this JDK; the default Maven install (tests skipped) is used.
+# JitPack builds every git tag with this JDK.
 jdk:
   - openjdk21
+# The wrapper prefers wget, which fails to fetch the Maven zip on JitPack's build image. With
+# MVNW_USERNAME/MVNW_PASSWORD set it skips wget/curl and downloads with Java instead (the same
+# HTTP client Maven uses for the dependencies). The credentials are only sent if a server asks.
+install:
+  - MVNW_USERNAME=jitpack MVNW_PASSWORD=jitpack ./mvnw -B clean install -DskipTests
