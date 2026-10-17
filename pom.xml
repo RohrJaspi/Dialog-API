@@ -5,7 +5,7 @@
 
     <groupId>dev.dialogapi</groupId>
     <artifactId>dialogapi-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>pom</packaging>
     <name>DialogAPI</name>
     <description>Action bar dialogs, dialog screens and glyph layouts for Paper 1.21.9 - 26.3, with one shared resource pack</description>

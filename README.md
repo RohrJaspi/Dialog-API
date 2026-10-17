@@ -61,12 +61,12 @@ Players use an unmodded vanilla client. Supported: **Paper 1.21.9 up to 26.3** (
 Requirements: Java 21 and the included Maven wrapper (Maven 3.9, downloaded on first use).
 
 ```bash
-./mvnw package          # runs the tests, builds plugin/target/DialogAPI-1.0.0.jar
+./mvnw package          # runs the tests, builds plugin/target/DialogAPI-1.0.1.jar
 ./mvnw install          # also installs dialogapi-api into ~/.m2 so your plugins can compile against it
 ./scripts/run-server.sh 1.21.11   # local test server in run/1.21.11 (you have to accept the EULA there)
 ```
 
-Put `DialogAPI-1.0.0.jar` into `plugins/`. On the first start the plugin:
+Put `DialogAPI-1.0.1.jar` into `plugins/`. On the first start the plugin:
 
 1. writes `config.yml`, `actionbar/` and the example `actionbar/dialogs/stats_house.yml`,
 2. writes placeholder textures to `textures/`,
@@ -156,7 +156,7 @@ artifact, so **nothing is shaded into your jar**. The API is published through
 <dependency>
     <groupId>com.github.RohrJaspi.dialog-api</groupId>
     <artifactId>dialogapi-api</artifactId>
-    <version>1.0.0</version>   <!-- a git tag of the repository -->
+    <version>1.0.1</version>   <!-- a git tag of the repository -->
     <scope>provided</scope>    <!-- never shade it: the classes come from the DialogAPI plugin -->
 </dependency>
 ```
@@ -165,10 +165,10 @@ Gradle:
 
 ```kotlin
 repositories { maven("https://jitpack.io") }
-dependencies { compileOnly("com.github.RohrJaspi.dialog-api:dialogapi-api:1.0.0") }
+dependencies { compileOnly("com.github.RohrJaspi.dialog-api:dialogapi-api:1.0.1") }
 ```
 
-For a local build without JitPack run `./mvnw install` here and use `dev.dialogapi:dialogapi-api:1.0.0`
+For a local build without JitPack run `./mvnw install` here and use `dev.dialogapi:dialogapi-api:1.0.1`
 (local repository only). Declare the dependency in your plugin descriptor:
 
 ```yaml
